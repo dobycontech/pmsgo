@@ -1,0 +1,5 @@
+{
+    "name": "psname1",
+    "bin":"./test/psname1",
+    "timeoutseconds":-1
+}
