@@ -1,39 +1,14 @@
 # pmsgo
 Process management Services
 
-## Iteration 1.
+read build-docs
 
-### run process
-touch /test/ps.json
-{
-    "name": "psname1",
-    "bin":"./litehttpserver",
-    "timeoutseconds":-1
-}
-go run . --file="./test/jsonpath"
-init->{
-run by arg file
-Load Json into struct process
-Run process
-}->exit
+Objetive:
 
-### watch process
+Golan Samples, practicing, and make a process control manager like pm2 in golang for every desktop platform
 
-Watch process changes
-go run . --monit="psname1"
-init->{
-    run by arg monit
-    Load os.process into process or nil
-    print process status
-}<-exit
+Read iterations for fun.
 
-### stop process
-Stop running process
-go run . --stop="psname1"
-init->{
-    run by arg stop
-    Load os.process into process
-    process stop
-    run watch process
-}
+This is versión 0.0.1 I'm training to do the repo for fun do not try in this way on production environment 
 
+;)

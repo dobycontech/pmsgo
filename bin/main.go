@@ -9,8 +9,11 @@ import (
 func main() {
 	var ps process.Process
 	var err error
+	canRun := false
 	for _, arg := range os.Args {
-		if strings.Contains(arg, "--file") {
+		switch {
+		case strings.Contains(arg, "--file"):
+			canRun = true
 			value := strings.Split(arg, "=")[1]
 			if _, err := os.Stat(value); err != nil {
 				println("file not exists: ", value)
@@ -18,20 +21,19 @@ func main() {
 			}
 			ps, err = process.New(value)
 			if err != nil {
-				println("error creating process:", err)
+				println("error creating process:", err.Error())
 				os.Exit(-1)
 			}
-			err = ps.Run()
-			if err != nil {
-				println("error running process:", err)
-				os.Exit(-1)
-			}
-		}
-			if strings.Contains(arg, "--monit") {
-				ps.Monit()
-			}
-			if strings.Contains(arg, "--stop") {
-				ps.Stop()
-			}
+		case strings.Contains(arg, "--monit"):
+			canRun = false
+			ps.Monit()
+		case strings.Contains(arg, "--stop"):
+			canRun = false
+			ps.Stop()
+			ps.Monit()
+		}	
+	}
+	if canRun {
+		ps.Run()
 	}
 }
