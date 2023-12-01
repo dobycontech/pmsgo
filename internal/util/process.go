@@ -29,9 +29,9 @@ func GetProcessByName(name string) ProcessEx{
 	if err != nil {
 		println("error checking monitor: ", err)
 	}
+	pex := ProcessEx{}
 	for _, line := range strings.Split(string(out), "\n") {
-		if strings.Contains(line, name) {
-			pex := ProcessEx{}
+		if strings.Contains(strings.ToLower(line), strings.ToLower(name)) {
 			i := 0
 			for _, it := range strings.Split(line, " ") {
 				if it == "" {
@@ -64,10 +64,14 @@ func GetProcessByName(name string) ProcessEx{
 				}
 				i++
 			}
-			return pex
+			// TODO: Con motivo de pruebas y dado que sleep existe con el sistema quito los sleep de sistema
+			if pex.Pid > 100 && strings.Contains(strings.ToLower(pex.Command), strings.ToLower(name)){
+				return pex
+			}
+			pex = ProcessEx{}
 		}
 	}
-	return ProcessEx{}
+	return pex
 }
 func isWin() bool {
 	return strings.Contains(strings.ToLower(runtime.GOOS), "win")
