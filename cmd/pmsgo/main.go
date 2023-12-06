@@ -1,11 +1,16 @@
+// The main function checks command line arguments and performs actions based on the arguments, such as
+// creating a new process, monitoring a process, or stopping a process.
 package main
 
 import (
-	"github.com/dobycontech/pmsgo/process"
 	"os"
 	"strings"
+
+	process "github.com/dobycontech/pmsgo/service"
 )
 
+// The main function checks command line arguments and performs actions based on the arguments, such as
+// creating a new process, monitoring a process, or stopping a process.
 func main() {
 	var ps process.Process
 	var err error
@@ -31,7 +36,7 @@ func main() {
 			canRun = false
 			ps.Stop()
 			ps.Monit()
-		}	
+		}
 	}
 	if canRun {
 		ps.Run()
