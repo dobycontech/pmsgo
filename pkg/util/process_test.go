@@ -3,14 +3,19 @@ package util
 import (
 	"os"
 	"os/exec"
+
 	//"strconv"
 	"testing"
 )
 
-func Test_GetByName(t *testing.T){
+func Test_GetByName(t *testing.T) {
 	pid := make(chan int)
-	go func(){
-		cmd := exec.Command("/bin/sleep", "5 second")
+	go func() {
+		secs := "5 second"
+		if IsMac() {
+			secs = "5"
+		}
+		cmd := exec.Command("/bin/sleep", secs)
 		cmd.Stdout = os.Stdout
 		err := cmd.Start()
 		if err != nil {
@@ -21,20 +26,10 @@ func Test_GetByName(t *testing.T){
 	processId := <-pid
 	close(pid)
 	proc := GetProcessByName("sleep")
-	if int(proc.Pid) != processId{
+	if int(proc.Pid) != processId {
 		t.Log("process not exists")
 	}
 	if proc.Command == "" {
 		t.Error("Process not found")
 	}
-	
-	/*
-	go func(){
-		err := exec.Command("kill", strconv.Itoa(pid))
-		if err != nil {
-			t.Log("fail to remove pid: ", pid, " with error: ", err)
-		}
-	}()
-	<-time.After(2*time.Second)
-	*/
 }
